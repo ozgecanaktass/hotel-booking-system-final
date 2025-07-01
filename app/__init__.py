@@ -27,6 +27,9 @@ def create_app():
     from app.routes.recommendation_routes import recommendation_bp
     from app.routes.hotel_routes import hotel_bp
     from app.routes.agent_routes import agent_bp
+    from app.routes.gateway_routes import gateway_bp
+    app.register_blueprint(gateway_bp)
+
 
     app.register_blueprint(agent_bp)
     app.register_blueprint(hotel_bp)
