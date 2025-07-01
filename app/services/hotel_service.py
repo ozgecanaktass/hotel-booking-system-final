@@ -32,17 +32,17 @@ def get_hotel_details(hotel_name):
 
     return data
 
-def get_filtered_hotels(city, budget, check_in, check_out, preferences):
+def get_filtered_hotels(city, budget, check_in, check_out, preferences, min_rating=0):
     rooms = Room.query.filter(
         Room.city.ilike(city),
         Room.price <= budget,
         Room.available_from <= check_in,
-        Room.available_to >= check_out
+        Room.available_to >= check_out,
+        Room.rating >= min_rating  # ⭐ min_rating filtresi eklendi
     ).all()
 
     results = []
     for room in rooms:
-        # Eğer amenities virgülle ayrılmış string ise:
         room_amenities = [a.strip().lower() for a in room.amenities.split(",")] if isinstance(room.amenities, str) else []
         if set(preferences).issubset(set(room_amenities)):
             results.append({

@@ -63,11 +63,12 @@ def parse_booking_request(message: str):
         result["people"] = int(people_match.group(1))
 
     # Budget ($300 varsa al, yoksa default ver)
-    budget_match = re.search(r"\$?(\d+)", message)
+    budget_match = re.search(r"(?:budget|under|max(?:imum)?)\s*(?:is\s*)?\$?(\d+)", message.lower())
     if budget_match:
         result["budget"] = int(budget_match.group(1))
     else:
-        result["budget"] = 300  # default
+        result["budget"] = 300
+
 
     # Minimum Rating (e.g. 4+ stars → 4.0)
     rating_match = re.search(r"(\d(?:\.\d)?)\s?\+?\s?stars?", message.lower())

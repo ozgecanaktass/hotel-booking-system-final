@@ -10,7 +10,6 @@ def book_room_logic(room_id, people, check_in, check_out):
         check_out_date = datetime.strptime(check_out, "%Y-%m-%d").date()
 
         room = Room.query.get(room_id)
-
         if not room:
             return {"error": "Room not found"}
 
@@ -21,14 +20,28 @@ def book_room_logic(room_id, people, check_in, check_out):
                 room.available_from <= check_out_date <= room.available_to):
             return {"error": "Room not available in selected dates"}
 
+        # ✅ Rezervasyon oluştur
+        booking = Booking(
+            room_id=room_id,
+            check_in_date=check_in_date,
+            check_out_date=check_out_date,
+            people=people
+        )
+        db.session.add(booking)
+
+        # ✅ Kapasiteyi düşür
         room.capacity -= people
+
         db.session.commit()
 
         return {
             "msg": "Room successfully booked",
             "room_id": room.id,
+            "booking_id": booking.id,
             "remaining_capacity": room.capacity
         }
 
     except Exception as e:
+        db.session.rollback()
         return {"error": str(e)}
+
