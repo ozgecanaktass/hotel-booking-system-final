@@ -78,9 +78,10 @@ hotel-booking/
 
 ---
 
-## 💾 Data Models (ER Overview)
+## 🗃️ Data Models
 
-### Room (PostgreSQL)
+### 🛏️ Room Model
+
 | Field          | Type            |
 |----------------|-----------------|
 | id             | Integer (PK)    |
@@ -93,6 +94,17 @@ hotel-booking/
 | available_from | Date            |
 | available_to   | Date            |
 | amenities      | String (CSV)    |
+
+### 📘 Booking Model
+
+| Field           | Type         | Description                      |
+|-----------------|--------------|----------------------------------|
+| id              | Integer (PK) | Primary key                      |
+| room_id         | Integer (FK) | Foreign key to `Room.id`         |
+| check_in_date   | Date         | User's check-in date             |
+| check_out_date  | Date         | User's check-out date            |
+| people          | Integer      | Number of people for the booking |
+
 
 ### Comment (Firestore)
 ```json
@@ -110,7 +122,7 @@ hotel-booking/
 ```
 ---
 
-- **Demo Video:** [GOOGLE DRIVE](https://drive.google.com/drive/folders/1i3u6wk3YQjN76bIW6hPGDME6h6J2fKva?usp=sharing)
+- **Demo Video:** [GOOGLE DRIVE](https://drive.google.com/drive/folders/1TQag1qZOeIb8xrwzanTGRshjlWI1PP1_?usp=drive_link)
 --- 
 
   👨‍💻 Developed by **Özgecan Aktaş - 21070001019** for SE4458 Final Project- Spring 2025
