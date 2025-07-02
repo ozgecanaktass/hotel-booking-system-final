@@ -4,7 +4,7 @@ A full-stack hotel booking platform built for the SE4458 Software Architecture c
 
 ## 🔗 Deployed URLs
 
-- **Backend API**: https://hotel-booking-api.onrender.com  
+- **Backend API**: [https://hotel-booking-api.onrender.com](https://hotel-booking-system-final.onrender.com)  
 ---
 
 ## 🧩 Features
@@ -74,8 +74,6 @@ hotel-booking/
 - JWT tokens are stored in localStorage on the frontend
 - Room availability is based on date ranges only, not per-night precision
 - Firestore is used solely for comments, not bookings
-- Redis-based caching was **not** implemented
-
 ---
 
 ## 🗃️ Data Models
@@ -122,7 +120,7 @@ hotel-booking/
 ```
 ---
 
-- **Demo Video:** [GOOGLE DRIVE](https://drive.google.com/drive/folders/1TQag1qZOeIb8xrwzanTGRshjlWI1PP1_?usp=drive_link)
+- **Demo Video:** [GOOGLE DRIVE](https://drive.google.com/drive/folders/1i3u6wk3YQjN76bIW6hPGDME6h6J2fKva?usp=sharing)
 --- 
 
   👨‍💻 Developed by **Özgecan Aktaş - 21070001019** for SE4458 Final Project- Spring 2025
