@@ -21,4 +21,8 @@ def book_room():
 
     if result.get("error"):
         return jsonify(result), 400
-    return jsonify(result), 200
+    return jsonify({
+        "msg": "Room booked successfully!",
+        "reservation": result
+    }), 200
+

@@ -5,7 +5,7 @@ from app.services.hotel_service import get_filtered_hotels
 
 gateway_bp = Blueprint("gateway", __name__)
 
-# Basit bir context
+# Basit bir context (state)
 chat_context = {}
 
 @gateway_bp.route("/gateway/message", methods=["POST"])
@@ -17,10 +17,17 @@ def handle_message():
         return jsonify({"error": "Missing message"}), 400
 
     try:
-        # Rezervasyon niyeti
+        # ✳️ Kullanıcı "book it" dediyse
         if "book it" in message.lower():
             if not all(k in chat_context for k in ["room_id", "people", "check_in", "check_out"]):
-                return jsonify({"error": "Incomplete booking context"}), 400
+                return jsonify({
+                    "intent": "confirm_booking",
+                    "details": {
+                        "msg": "No previous room found to book.",
+                        "room_id": None,
+                        "remaining_capacity": None
+                    }
+                })
 
             result = book_room_logic(
                 room_id=chat_context["room_id"],
@@ -28,9 +35,24 @@ def handle_message():
                 check_in=chat_context["check_in"],
                 check_out=chat_context["check_out"]
             )
-            return jsonify({"intent": "confirm_booking", "details": result})
 
-        # Otel arama niyeti
+            # ❗️Hata varsa düzgün yapı dön
+            if "error" in result:
+                return jsonify({
+                    "intent": "confirm_booking",
+                    "details": {
+                        "msg": result["error"],
+                        "room_id": None,
+                        "remaining_capacity": None
+                    }
+                })
+
+            return jsonify({
+                "intent": "confirm_booking",
+                "details": result
+            })
+
+        # ✳️ Otel arama niyeti
         parsed = parse_booking_request(message)
         if not parsed:
             return jsonify({"error": "Could not parse message"}), 200
@@ -44,6 +66,7 @@ def handle_message():
             min_rating=parsed.get("min_rating", 0)
         )
 
+        # En iyi odayı sonraki rezervasyonda kullanmak için sakla
         if hotels:
             chat_context["room_id"] = hotels[0]["room_id"]
             chat_context["check_in"] = parsed["check_in"]

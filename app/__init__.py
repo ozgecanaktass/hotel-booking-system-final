@@ -3,7 +3,9 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_jwt_extended import JWTManager
 from dotenv import load_dotenv
 import os
-# from app.models.room_model import Room
+
+from flask import Flask
+from flask_cors import CORS
 
 load_dotenv()
 
@@ -12,6 +14,7 @@ jwt = JWTManager()
 
 def create_app():
     app = Flask(__name__)
+    CORS(app)
     app.config["JWT_SECRET_KEY"] = os.getenv("SECRET_KEY")
     app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
@@ -28,9 +31,9 @@ def create_app():
     from app.routes.hotel_routes import hotel_bp
     from app.routes.agent_routes import agent_bp
     from app.routes.gateway_routes import gateway_bp
+    from app.routes.room_routes import room_bp
+    app.register_blueprint(room_bp)
     app.register_blueprint(gateway_bp)
-
-
     app.register_blueprint(agent_bp)
     app.register_blueprint(hotel_bp)
     app.register_blueprint(recommendation_bp)

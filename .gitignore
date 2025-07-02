@@ -1,2 +1,6 @@
 .env
 firebase_key.json
+firebase_key_eski.json
+hotel-booking-system-final/
+/frontend/
+test_nightly.py
