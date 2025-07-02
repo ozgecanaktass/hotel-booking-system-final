@@ -6,7 +6,6 @@ from datetime import datetime
 
 agent_bp = Blueprint("agent", __name__)
 
-# AI bağlamı (en son seçilen otel bilgilerini hatırlar)
 chat_context = {
     "last_selected_room": None,
     "last_check_in": None,
@@ -23,7 +22,6 @@ def ai_understand():
         return jsonify({"error": "Missing message"}), 400
 
     try:
-        # ✅ Eğer kullanıcı rezervasyon istiyorsa
         if "book" in user_msg.lower() and "yes" in user_msg.lower():
             room_id = chat_context.get("last_selected_room")
             check_in = chat_context.get("last_check_in")
@@ -36,7 +34,6 @@ def ai_understand():
             result = book_room_logic(room_id, people, check_in, check_out)
             return jsonify({"msg": "Booking confirmed!", "details": result}), 200
 
-        # ✅ Aksi halde parse edip otel öner
         parsed = parse_booking_request(user_msg)
         if not parsed:
             return jsonify({"error": "AI agent failed to parse user input."}), 200
@@ -51,7 +48,6 @@ def ai_understand():
 
         hotels = get_filtered_hotels(city, budget, check_in, check_out, preferences, min_rating)
 
-        # ✅ AI context'e en iyi odayı kaydet
         if hotels:
             chat_context["last_selected_room"] = hotels[0]["room_id"]
             chat_context["last_check_in"] = str(check_in)

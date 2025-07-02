@@ -20,7 +20,6 @@ def book_room_logic(room_id, people, check_in, check_out):
                 room.available_from <= check_out_date <= room.available_to):
             return {"error": "Room not available in selected dates"}
 
-        # ✅ Rezervasyon oluştur
         booking = Booking(
             room_id=room_id,
             check_in_date=check_in_date,
@@ -29,7 +28,6 @@ def book_room_logic(room_id, people, check_in, check_out):
         )
         db.session.add(booking)
 
-        # ✅ Kapasiteyi düşür
         room.capacity -= people
 
         db.session.commit()

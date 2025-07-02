@@ -15,13 +15,11 @@ from datetime import datetime
 
 hotel_bp = Blueprint("hotel", __name__)
 
-# 🔹 Eski endpoint: Belirli otelin detayları
 @hotel_bp.route("/hotel/<string:hotel_name>", methods=["GET"])
 def hotel_details(hotel_name):
     result = get_hotel_details(hotel_name)
     return jsonify(result)
 
-# 🔹 Yeni endpoint: Tüm otelleri getir
 @hotel_bp.route("/rooms", methods=["GET"])
 def get_rooms():
     rooms = Room.query.all()
@@ -40,7 +38,6 @@ def get_rooms():
         for r in rooms
     ])
 
-# 🔹 Yeni endpoint: Yeni otel ekle
 @hotel_bp.route("/add-room", methods=["POST"])
 def add_room():
     data = request.json

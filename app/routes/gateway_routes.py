@@ -5,7 +5,6 @@ from app.services.hotel_service import get_filtered_hotels
 
 gateway_bp = Blueprint("gateway", __name__)
 
-# Basit bir context (state)
 chat_context = {}
 
 @gateway_bp.route("/gateway/message", methods=["POST"])
@@ -17,7 +16,6 @@ def handle_message():
         return jsonify({"error": "Missing message"}), 400
 
     try:
-        # ✳️ Kullanıcı "book it" dediyse
         if "book it" in message.lower():
             if not all(k in chat_context for k in ["room_id", "people", "check_in", "check_out"]):
                 return jsonify({
@@ -36,7 +34,6 @@ def handle_message():
                 check_out=chat_context["check_out"]
             )
 
-            # ❗️Hata varsa düzgün yapı dön
             if "error" in result:
                 return jsonify({
                     "intent": "confirm_booking",
@@ -52,7 +49,6 @@ def handle_message():
                 "details": result
             })
 
-        # ✳️ Otel arama niyeti
         parsed = parse_booking_request(message)
         if not parsed:
             return jsonify({"error": "Could not parse message"}), 200
@@ -65,8 +61,7 @@ def handle_message():
             preferences=parsed.get("preferences", []),
             min_rating=parsed.get("min_rating", 0)
         )
-
-        # En iyi odayı sonraki rezervasyonda kullanmak için sakla
+        
         if hotels:
             chat_context["room_id"] = hotels[0]["room_id"]
             chat_context["check_in"] = parsed["check_in"]

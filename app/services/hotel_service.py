@@ -7,7 +7,6 @@ import json
 def get_hotel_details(hotel_name):
     cache_key = f"hotel:{hotel_name.lower()}"
 
-    # 1. Redis'te varsa getir
     cached = redis_client.get(cache_key)
     if cached:
         print("🔁 Cache hit!")
@@ -27,7 +26,6 @@ def get_hotel_details(hotel_name):
         "available_to": str(room.available_to)
     } for room in rooms]
 
-    # Redis'e 1 saatlik TTL ile yaz
     redis_client.setex(cache_key, 3600, json.dumps(data))
 
     return data
@@ -38,7 +36,7 @@ def get_filtered_hotels(city, budget, check_in, check_out, preferences, min_rati
         Room.price <= budget,
         Room.available_from <= check_in,
         Room.available_to >= check_out,
-        Room.rating >= min_rating  # ⭐ min_rating filtresi eklendi
+        Room.rating >= min_rating 
     ).all()
 
     results = []

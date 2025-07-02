@@ -47,7 +47,6 @@ def parse_booking_request(message: str):
     if city_match:
         result["city"] = city_match.group(1)
 
-    # Dates (e.g. July 15 to July 18)
     date_match = re.search(r"from (\w+ \d{1,2}) to (\w+ \d{1,2})", message)
     if date_match:
         try:
@@ -57,12 +56,10 @@ def parse_booking_request(message: str):
         except:
             pass
 
-    # People (e.g. for 2 adults)
     people_match = re.search(r"for (\d+) adults?", message)
     if people_match:
         result["people"] = int(people_match.group(1))
 
-    # Budget ($300 varsa al, yoksa default ver)
     budget_match = re.search(r"(?:budget|under|max(?:imum)?)\s*(?:is\s*)?\$?(\d+)", message.lower())
     if budget_match:
         result["budget"] = int(budget_match.group(1))
@@ -70,12 +67,10 @@ def parse_booking_request(message: str):
         result["budget"] = 300
 
 
-    # Minimum Rating (e.g. 4+ stars → 4.0)
     rating_match = re.search(r"(\d(?:\.\d)?)\s?\+?\s?stars?", message.lower())
     if rating_match:
         result["min_rating"] = float(rating_match.group(1))
 
-    # Preferences: look for keywords like pool, breakfast
     prefs = []
     for keyword in ["pool", "breakfast", "wifi", "city center"]:
         if keyword.lower() in message.lower():
