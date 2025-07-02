@@ -4,3 +4,10 @@ firebase_key_eski.json
 hotel-booking-system-final/
 /frontend/
 test_nightly.py
+
+.env
+firebase_key.json
+*.env
+*.json
+__pycache__/
+venv/
